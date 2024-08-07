@@ -781,12 +781,11 @@ class DefaultApi
      *
      * @throws \UPS\Shipping\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \UPS\Shipping\Shipping\LABELRECOVERYResponseWrapper
+     * @return array
      */
     public function labelRecovery($body, $version, $trans_id = null, $transaction_src = 'testing')
     {
-        list($response) = $this->labelRecoveryWithHttpInfo($body, $version, $trans_id, $transaction_src);
-        return $response;
+        return $this->labelRecoveryWithHttpInfo($body, $version, $trans_id, $transaction_src);
     }
 
     /**
@@ -846,11 +845,14 @@ class DefaultApi
                 }
             }
 
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
+            return $content;
+
+            // Serializer not finished.
+//            return [
+//                ObjectSerializer::deserialize($content, $returnType, []),
+//                $response->getStatusCode(),
+//                $response->getHeaders()
+//            ];
 
         } catch (ApiException $e) {
             switch ($e->getCode()) {
